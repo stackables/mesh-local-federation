@@ -29,8 +29,18 @@ describe("Federation", () => {
 	});
 
 	test("run basic query", async () => {
-		const yoga = await createGatewayConfig({
+		const supergraphSDL = await createSupergraph({
 			subgraphs: harness.subgraphs,
+			localSchema: harness.localSchema,
+			onRemoteRequestHeaders: ({ name }) => {
+				return {
+					authorization: name,
+				};
+			},
+		});
+
+		const yoga = await createGatewayConfig({
+			supergraphSDL,
 			localSchema: harness.localSchema,
 			onRemoteRequestHeaders: ({ name }) => {
 				return {
@@ -47,6 +57,7 @@ describe("Federation", () => {
 				};
 			},
 		}).fetch;
+
 		const response = await fetch("/graphql", {
 			method: "POST",
 			headers: {

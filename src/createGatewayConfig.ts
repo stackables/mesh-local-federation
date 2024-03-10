@@ -5,8 +5,7 @@ import { InMemoryStoreStorageAdapter, MeshStore } from "@graphql-mesh/store";
 import { DefaultLogger, PubSub } from "@graphql-mesh/utils";
 import { GraphQLSchema } from "graphql";
 import SupergraphHandler from "./SupergraphHandler.js";
-import { createSupergraph } from "./createSupergraph.js";
-import { OnRemoteRequestHeadersCallback, SubgraphService } from "./index.js";
+import { OnRemoteRequestHeadersCallback } from "./index.js";
 
 export interface OnRemoteRequestHeadersOptions<T = unknown> {
 	url: string;
@@ -14,9 +13,8 @@ export interface OnRemoteRequestHeadersOptions<T = unknown> {
 }
 
 export interface CreateGatewayConfigOptions<T = unknown> {
-	subgraphs: SubgraphService[];
+	supergraphSDL: string;
 	localSchema: GraphQLSchema;
-	supergraphSDL?: string;
 	onRemoteRequestHeaders?: OnRemoteRequestHeadersCallback<T>;
 }
 
@@ -38,8 +36,7 @@ export async function createGatewayConfig<T = unknown>(
 		store: store.child("BareMerger"),
 	});
 
-	const supergraphSdl =
-		opts.supergraphSDL ?? (await createSupergraph(opts as any));
+	const supergraphSdl = opts.supergraphSDL;
 
 	return getMesh({
 		cache,
