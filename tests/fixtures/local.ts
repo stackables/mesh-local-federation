@@ -17,9 +17,12 @@ export const localSchema = buildSubgraphSchema({
 			},
 		},
 		Query: {
-			me: () => {
+			me: (p, a, c, i) => {
+				if (!c.user) {
+					throw new Error("Login");
+				}
 				return {
-					id: "aarne",
+					id: c.user,
 					identity: "google",
 				};
 			},

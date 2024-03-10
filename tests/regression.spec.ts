@@ -39,11 +39,19 @@ describe("Federation", () => {
 			},
 		});
 
-		const fetch = createYoga(yoga).fetch;
+		const fetch = createYoga({
+			...yoga,
+			context: ({ request }) => {
+				return {
+					user: request.headers.get("user-id"),
+				};
+			},
+		}).fetch;
 		const response = await fetch("/graphql", {
 			method: "POST",
 			headers: {
 				"content-type": "application/json",
+				"user-id": "aarne",
 			},
 			body: JSON.stringify({
 				query: `{ 
