@@ -43,6 +43,13 @@ describe("Federation", () => {
 			},
 			body: JSON.stringify({
 				query: `{ 
+					users {
+						id
+						identity
+						account {
+							name
+						}
+					}
 					me {
 						id
 						identity

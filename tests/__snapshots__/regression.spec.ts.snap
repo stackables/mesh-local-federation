@@ -12,6 +12,22 @@ exports[`Federation run basic query 1`] = `
       "identity": "google",
       "name": "Aarne Laur",
     },
+    "users": [
+      {
+        "account": {
+          "name": "Google",
+        },
+        "id": "aarne",
+        "identity": "fake",
+      },
+      {
+        "account": {
+          "name": "Google",
+        },
+        "id": "robert",
+        "identity": "fake",
+      },
+    ],
   },
 }
 `;

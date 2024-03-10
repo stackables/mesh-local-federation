@@ -11,6 +11,11 @@ export const localSchema = buildSubgraphSchema({
 		}
 	`,
 	resolvers: {
+		User: {
+			identity: (p) => {
+				return p.identity ?? "fake";
+			},
+		},
 		Query: {
 			me: () => {
 				return {
