@@ -68,7 +68,19 @@ const { yogaConfig, supergraphSDL } = createGatewayConfig({
 });
 ```
 
-## Control execution flow and customize headers
+## Customize headers
+
+Special hook is called before each outgoing remote request. Local schema request will have the `context` filled with the original `yoga context`.
+
+```typescript
+const { yogaConfig, supergraphSDL } = createGatewayConfig({
+	onRemoteRequestHeaders: async ({ url, context }) => {
+		return {
+			Authorization: `Bearer ${await getToken(url)}`,
+		};
+	},
+});
+```
 
 ## Using a predefined supergraph file (much faster)
 
