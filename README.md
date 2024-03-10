@@ -1,3 +1,6 @@
+[![npm](https://img.shields.io/npm/v/mesh-local-federation?label=mesh-local-federation&logo=npm)](https://www.npmjs.com/package/mesh-local-federation)
+[![codecov](https://codecov.io/gh/stackables/mesh-local-federation/branch/main/graph/badge.svg?token=x1DmWF8EId)](https://codecov.io/gh/stackables/mesh-local-federation)
+
 # GraphQL mesh gateway with local federation
 
 Disclaimer: This is 99% glue around the the following excellent packages:
