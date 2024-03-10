@@ -49,7 +49,11 @@ export async function createGatewayConfig<T = unknown>(
 		sources: [
 			{
 				name: "Supergraph",
-				handler: new SupergraphHandler(supergraphSdl, opts.localSchema),
+				handler: new SupergraphHandler(
+					supergraphSdl,
+					opts.localSchema,
+					opts.onRemoteRequestHeaders
+				),
 			},
 		],
 	});

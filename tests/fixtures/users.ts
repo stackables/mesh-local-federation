@@ -1,6 +1,7 @@
 import { buildSubgraphSchema } from "@graphql-tools/federation";
 import { createYoga } from "graphql-yoga";
 import { createServer } from "node:http";
+import { useAuth } from ".";
 
 const data = [
 	{ id: "aarne", name: "Aarne Laur", account: { id: "google" } },
@@ -37,6 +38,7 @@ const schema = buildSubgraphSchema({
 
 const yoga = createYoga({
 	schema,
+	plugins: [useAuth("users")],
 });
 
 export const usersServer = createServer(yoga);

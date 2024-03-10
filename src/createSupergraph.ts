@@ -29,11 +29,20 @@ export async function createSupergraph(opts: CreateSupergraphOptions) {
 	// fetch all remotes
 	const subgraphsWithTypes = Promise.all(
 		subgraphs.map(async (sub) => {
+			const headers: Record<string, string> = {
+				"content-type": "application/json",
+			};
+			if (opts.onRemoteRequestHeaders) {
+				const more = await opts.onRemoteRequestHeaders({
+					context: {},
+					url: sub.url,
+					name: sub.name,
+				});
+				Object.assign(headers, more);
+			}
 			const response = await sub.fetch(sub.url, {
 				method: "POST",
-				headers: {
-					"content-type": "application/json",
-				},
+				headers,
 				body: JSON.stringify({
 					query: `{ _service { sdl } }`,
 				}),

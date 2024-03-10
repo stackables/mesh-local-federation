@@ -18,8 +18,10 @@ describe("Federation", () => {
 		const response = await createSupergraph({
 			subgraphs: harness.subgraphs,
 			localSchema: harness.localSchema,
-			onRemoteRequestHeaders: () => {
-				return {};
+			onRemoteRequestHeaders: ({ name }) => {
+				return {
+					authorization: name,
+				};
 			},
 		});
 
@@ -30,8 +32,10 @@ describe("Federation", () => {
 		const yoga = await createGatewayConfig({
 			subgraphs: harness.subgraphs,
 			localSchema: harness.localSchema,
-			onRemoteRequestHeaders: () => {
-				return {};
+			onRemoteRequestHeaders: ({ name }) => {
+				return {
+					authorization: name,
+				};
 			},
 		});
 

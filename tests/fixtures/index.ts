@@ -1,6 +1,31 @@
+import { Plugin } from "graphql-yoga";
 import { accountsServer } from "./accounts";
 import { localSchema } from "./local";
 import { usersServer } from "./users";
+
+export function useAuth(requiredToken: string): Plugin {
+	return {
+		onRequest({ request, fetchAPI, endResponse }) {
+			const gatewayToken = request.headers.get("authorization");
+			if (gatewayToken?.toLowerCase() !== requiredToken.toLowerCase()) {
+				console.log(
+					"Fake authorization failed",
+					gatewayToken,
+					"but required",
+					requiredToken
+				);
+				endResponse(
+					new fetchAPI.Response(null, {
+						status: 401,
+						headers: {
+							"Content-Type": "application/json",
+						},
+					})
+				);
+			}
+		},
+	};
+}
 
 export type TestHarness = Awaited<ReturnType<typeof createFixture>>;
 

@@ -5,6 +5,7 @@ export interface SubgraphService {
 
 export interface OnRemoteRequestHeadersOptions<T = unknown> {
 	url: string;
+	name: string;
 	context: T;
 }
 
