@@ -1,13 +1,23 @@
 import { MeshFetchRequestInit } from "@graphql-mesh/types";
 import { FetchFn, buildHTTPExecutor } from "@graphql-tools/executor-http";
 import type { Executor } from "@graphql-tools/utils";
+import { readFile } from "fs/promises";
 import { GraphQLResolveInfo, GraphQLSchema } from "graphql";
 import { createYoga } from "graphql-yoga";
-import { OnRemoteRequestHeadersCallback, SubgraphService } from ".";
+import { OnRemoteRequestHeadersCallback, SubgraphService } from "./index.js";
 
 export interface CreateSupergraphOptions<T = unknown> {
 	localSchema: GraphQLSchema;
 	onRemoteRequestHeaders?: OnRemoteRequestHeadersCallback<T>;
+}
+
+/**
+ * @materialized
+ */
+async function getVersion() {
+	const pkg = await readFile("./package.json");
+	const parsed = JSON.parse(pkg.toString());
+	return parsed.version;
 }
 
 function wrap(
@@ -30,6 +40,8 @@ function wrap(
 			});
 			Object.assign(headers, more);
 		}
+
+		headers["User-Agent"] = `mesh-local-federation / ${await getVersion()}`;
 
 		return fetchFn(
 			url,

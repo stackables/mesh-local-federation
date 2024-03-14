@@ -12,6 +12,7 @@ exports[`Federation run basic query 1`] = `
       "identity": "google",
       "name": "Aarne Laur",
     },
+    "userAgent": "mesh-local-federation / 1.0.0",
     "users": [
       {
         "account": {
@@ -118,6 +119,7 @@ enum join__Graph  {
 type Query @join__type(graph: ACCOUNTS)  @join__type(graph: LOCAL___GRAPHQL)  @join__type(graph: USERS)   {
   me: User @join__field(graph: LOCAL___GRAPHQL) 
   users: [User!] @join__field(graph: USERS) 
+  userAgent: String @join__field(graph: USERS) 
 }
 
 type Account @join__type(graph: ACCOUNTS, key: "id")  @join__type(graph: USERS, key: "id")   {

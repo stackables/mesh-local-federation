@@ -1,7 +1,7 @@
 import { GetMeshSourcePayload, MeshHandler } from "@graphql-mesh/types";
 import { getStitchedSchemaFromSupergraphSdl } from "@graphql-tools/federation";
-import { CreateMeshInstanceOptions } from "./createMeshInstance";
-import { executorFactory } from "./executor";
+import { CreateMeshInstanceOptions } from "./createMeshInstance.js";
+import { executorFactory } from "./executor.js";
 
 export default class SupergraphHandler implements MeshHandler {
 	constructor(private opts: CreateMeshInstanceOptions<any>) {}

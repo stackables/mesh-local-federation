@@ -1,7 +1,7 @@
 import { buildSubgraphSchema } from "@graphql-tools/federation";
 import { createYoga } from "graphql-yoga";
 import { createServer } from "node:http";
-import { useAuth } from ".";
+import { useAuth } from "./index.js";
 
 const data = [
 	{ id: "aarne", name: "Aarne Laur", account: { id: "google" } },
@@ -20,12 +20,16 @@ const schema = buildSubgraphSchema({
 		}
 		type Query {
 			users: [User!]
+			userAgent: String
 		}
 	`,
 	resolvers: {
 		Query: {
 			users: () => {
 				return data;
+			},
+			userAgent: (obj, args, context, info) => {
+				return context.request.headers.get("User-Agent");
 			},
 		},
 		User: {

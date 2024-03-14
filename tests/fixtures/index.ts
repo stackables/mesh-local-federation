@@ -1,8 +1,8 @@
 import { Plugin } from "graphql-yoga";
-import { SubgraphService } from "../../src";
-import { accountsServer } from "./accounts";
-import { localSchema } from "./local";
-import { usersServer } from "./users";
+import { SubgraphService } from "../../src/index.js";
+import { accountsServer } from "./accounts.js";
+import { localSchema } from "./local.js";
+import { usersServer } from "./users.js";
 
 export function useAuth(requiredToken: string): Plugin {
 	return {

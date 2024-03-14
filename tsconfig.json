@@ -13,8 +13,6 @@
     "target": "ES2022",
     "lib": [
       "ES2022",
-      "es2015.collection",
-      "es2015.iterable",
       "DOM"
     ],
     "rootDir": ".",

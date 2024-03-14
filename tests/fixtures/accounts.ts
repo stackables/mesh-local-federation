@@ -1,7 +1,7 @@
 import { buildSubgraphSchema } from "@graphql-tools/federation";
 import { createYoga } from "graphql-yoga";
 import { createServer } from "node:http";
-import { useAuth } from ".";
+import { useAuth } from "./index.js";
 
 const data = [
 	{ id: "google", name: "Google" },

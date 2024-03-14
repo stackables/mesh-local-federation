@@ -62,6 +62,7 @@ describe("Federation", () => {
 			},
 			query: /* GraphQL */ `
 				{
+					userAgent
 					users {
 						id
 						identity
