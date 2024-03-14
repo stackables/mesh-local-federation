@@ -72,9 +72,9 @@ import { createSupergraph } from "mesh-local-federation";
 const supergraphSDL = await createSupergraph({
 	subgraphs,
 	localSchema,
-	onRemoteRequestHeaders: ({ url }) => {
+	onRemoteRequestHeaders: ({ endpoint }) => {
 		return {
-			Authorization: `Bearer ${await getToken(url)}`,
+			Authorization: `Bearer ${await getToken(endpoint)}`,
 		};
 	},
 });
@@ -94,9 +94,9 @@ import { createYoga } from "graphql-yoga";
 const config = await createMeshInstance({
 	supergraphSDL,
 	localSchema: harness.localSchema,
-	onRemoteRequestHeaders: ({ url }) => {
+	onRemoteRequestHeaders: ({ endpoint }) => {
 		return {
-			Authorization: `Bearer ${await getToken(url)}`,
+			Authorization: `Bearer ${await getToken(endpoint)}`,
 		};
 	},
 });
