@@ -13,4 +13,5 @@ export type OnRemoteRequestHeadersCallback<T> = (
 	opts: OnRemoteRequestHeadersOptions<T>
 ) => HeadersInit | Promise<HeadersInit>;
 
-export { createGatewayConfig } from "./createGatewayConfig.js";
+export { createMeshInstance } from "./createMeshInstance.js";
+export { createSupergraph } from "./createSupergraph.js";

@@ -1,4 +1,5 @@
 import { Plugin } from "graphql-yoga";
+import { SubgraphService } from "../../src";
 import { accountsServer } from "./accounts";
 import { localSchema } from "./local";
 import { usersServer } from "./users";
@@ -45,7 +46,7 @@ export async function createFixture() {
 				name: "accounts",
 				url: "http://localhost:4006/graphql",
 			},
-		],
+		] as SubgraphService[],
 		localSchema,
 		async stop() {
 			await new Promise((resolve) => usersServer.close(() => resolve(null)));

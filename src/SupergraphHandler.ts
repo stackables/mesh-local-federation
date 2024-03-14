@@ -5,25 +5,21 @@ import {
 } from "@graphql-mesh/types";
 import { buildHTTPExecutor } from "@graphql-tools/executor-http";
 import { getStitchedSchemaFromSupergraphSdl } from "@graphql-tools/federation";
-import { GraphQLResolveInfo, GraphQLSchema } from "graphql";
+import { GraphQLResolveInfo } from "graphql";
 import { createYoga } from "graphql-yoga";
-import { OnRemoteRequestHeadersCallback } from ".";
+import { CreateMeshInstanceOptions } from "./createMeshInstance";
 
 export default class SupergraphHandler implements MeshHandler {
-	constructor(
-		private supergraphSdl: string,
-		private localSchema: GraphQLSchema,
-		private onRemoteRequestHeaders?: OnRemoteRequestHeadersCallback<any>
-	) {}
+	constructor(private opts: CreateMeshInstanceOptions<any>) {}
 
 	async getMeshSource({ fetchFn }: GetMeshSourcePayload) {
 		const schema = getStitchedSchemaFromSupergraphSdl({
-			supergraphSdl: this.supergraphSdl,
+			supergraphSdl: this.opts.supergraphSDL,
 			onExecutor: (opts) => {
 				if (opts.subgraphName === "LOCAL") {
 					return buildHTTPExecutor({
 						endpoint: opts.endpoint,
-						fetch: createYoga({ schema: this.localSchema, batching: true })
+						fetch: createYoga({ schema: this.opts.localSchema, batching: true })
 							.fetch as any,
 					});
 				}
@@ -35,8 +31,8 @@ export default class SupergraphHandler implements MeshHandler {
 					info?: GraphQLResolveInfo | undefined
 				) => {
 					const headers = options?.headers ?? {};
-					if (this.onRemoteRequestHeaders) {
-						const more = await this.onRemoteRequestHeaders({
+					if (this.opts.onRemoteRequestHeaders) {
+						const more = await this.opts.onRemoteRequestHeaders({
 							context: {},
 							url: opts.endpoint,
 							name: opts.subgraphName,

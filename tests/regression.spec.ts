@@ -1,21 +1,21 @@
 import { createYoga } from "graphql-yoga";
 import { createSupergraph } from "../src/createSupergraph.js";
-import { createGatewayConfig } from "../src/index.js";
+import { createMeshInstance } from "../src/index.js";
 import { TestHarness, createFixture } from "./fixtures/index.js";
+import {
+	GraphqlExecutor,
+	createGraphqlExecutor,
+} from "./utils/graphql-server.js";
 
 describe("Federation", () => {
 	let harness: TestHarness;
+	let supergraphSDL: string;
+	let executor: GraphqlExecutor;
 
-	beforeEach(async () => {
+	beforeAll(async () => {
 		harness = await createFixture();
-	});
 
-	afterEach(async () => {
-		await harness.stop();
-	});
-
-	test("supergraph is constructed correctly", async () => {
-		const response = await createSupergraph({
+		supergraphSDL = await createSupergraph({
 			subgraphs: harness.subgraphs,
 			localSchema: harness.localSchema,
 			onRemoteRequestHeaders: ({ name }) => {
@@ -25,21 +25,7 @@ describe("Federation", () => {
 			},
 		});
 
-		expect(response).toMatchSnapshot();
-	});
-
-	test("run basic query", async () => {
-		const supergraphSDL = await createSupergraph({
-			subgraphs: harness.subgraphs,
-			localSchema: harness.localSchema,
-			onRemoteRequestHeaders: ({ name }) => {
-				return {
-					authorization: name,
-				};
-			},
-		});
-
-		const yoga = await createGatewayConfig({
+		const yoga = await createMeshInstance({
 			supergraphSDL,
 			localSchema: harness.localSchema,
 			onRemoteRequestHeaders: ({ name }) => {
@@ -49,23 +35,33 @@ describe("Federation", () => {
 			},
 		});
 
-		const fetch = createYoga({
+		const server = createYoga({
 			...yoga,
 			context: ({ request }) => {
 				return {
 					user: request.headers.get("user-id"),
 				};
 			},
-		}).fetch;
+		});
 
-		const response = await fetch("/graphql", {
-			method: "POST",
+		executor = createGraphqlExecutor(server);
+	});
+
+	afterAll(async () => {
+		await harness.stop();
+	});
+
+	test("supergraph is constructed correctly", async () => {
+		expect(supergraphSDL).toMatchSnapshot();
+	});
+
+	test("run basic query", async () => {
+		const response = await executor({
 			headers: {
-				"content-type": "application/json",
 				"user-id": "aarne",
 			},
-			body: JSON.stringify({
-				query: `{ 
+			query: /* GraphQL */ `
+				{
 					users {
 						id
 						identity
@@ -82,13 +78,9 @@ describe("Federation", () => {
 							name
 						}
 					}
-				}`,
-			}),
+				}
+			`,
 		});
-		if (!response.ok) {
-			throw new Error("service sdl call failed");
-		}
-		const body = await response.json();
-		expect(body).toMatchSnapshot();
+		expect(response).toMatchSnapshot();
 	});
 });
