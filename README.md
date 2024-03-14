@@ -19,7 +19,7 @@ But for a specific workflow is sets up things in a simple and clean way to remov
 graph LR;
     subgraph Instance
         gateway(/graphql)--context-->local(Local executable schema)
-        db{{Supergraph\ndefinition}}<-.data..->gateway
+        db{{Supergraph\ndefinition}}<-.data.->gateway
     end
     gateway--headers--->federated1(External service);
     gateway--headers--->federated2(External service);
