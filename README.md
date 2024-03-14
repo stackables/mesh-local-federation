@@ -8,7 +8,10 @@ Disclaimer: This is 99% glue around the the following excellent packages:
 - [@graphql-mesh/\*](https://the-guild.dev/graphql/mesh/docs)
 - [@theguild/federation-composition](https://github.com/the-guild-org/federation)
 
-But for a specific workflow is sets up things in s simple manner tht is just nice and clean to use.
+But for a specific workflow is sets up things in a simple and clean way to remove un-needed boilerplate. The package exposes only 2 functions:
+
+1. `createSupergraph` - Takes external services and the local schema to produce the supergraph definition
+1. `createMeshInstance` - Takes the supergraph definition from createSupergraph and local schema to build a executable gateway configuration that can be used with [graphql-yoga](https://github.com/dotansimha/graphql-yoga)
 
 ## Workflow
 
@@ -16,7 +19,7 @@ But for a specific workflow is sets up things in s simple manner tht is just nic
 graph LR;
     subgraph Instance
         gateway(/graphql)-->local(Local executable schema)
-        db(Supergraph)<-->gateway
+        db(Supergraph\ndefinition)<-->gateway
     end
     gateway--->federated1(External service);
     gateway--->federated2(External service);
