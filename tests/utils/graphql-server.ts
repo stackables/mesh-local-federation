@@ -36,9 +36,9 @@ export function createGraphqlExecutor(
 		if (!response.ok) {
 			throw new Error("Server call failed");
 		}
-		const body = (await response.json()) as ExecutionResult;
+		const body = await response.json();
 
-		return body;
+		return body as ExecutionResult;
 	};
 
 	return executor;

@@ -42,10 +42,12 @@ export async function createSupergraph(opts: CreateSupergraphOptions) {
 			if (!response.ok) {
 				throw new Error("service sdl call failed");
 			}
-			const body = (await response.json()) as ExecutionResult<any>;
+
+			const body: ExecutionResult<any> = await response.json();
 			if (body.errors) {
 				throw new GraphAggregateError(body.errors);
 			}
+
 			const federationSDL = body.data._service.sdl;
 
 			return {
