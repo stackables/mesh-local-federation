@@ -111,12 +111,12 @@ schema
 
 enum join__Graph  {
   ACCOUNTS @join__graph(name: "accounts", url: "http://localhost:4006/graphql") 
-  LOCAL @join__graph(name: "local", url: "http://localhost/graphql") 
+  LOCAL___GRAPHQL @join__graph(name: "local://graphql", url: "local://graphql") 
   USERS @join__graph(name: "users", url: "http://localhost:4005/graphql") 
 }
 
-type Query @join__type(graph: ACCOUNTS)  @join__type(graph: LOCAL)  @join__type(graph: USERS)   {
-  me: User @join__field(graph: LOCAL) 
+type Query @join__type(graph: ACCOUNTS)  @join__type(graph: LOCAL___GRAPHQL)  @join__type(graph: USERS)   {
+  me: User @join__field(graph: LOCAL___GRAPHQL) 
   users: [User!] @join__field(graph: USERS) 
 }
 
@@ -125,9 +125,9 @@ type Account @join__type(graph: ACCOUNTS, key: "id")  @join__type(graph: USERS, 
   name: String! @join__field(graph: ACCOUNTS) 
 }
 
-type User @join__type(graph: LOCAL, key: "id")  @join__type(graph: USERS, key: "id")   {
+type User @join__type(graph: LOCAL___GRAPHQL, key: "id")  @join__type(graph: USERS, key: "id")   {
   id: ID!
-  identity: String @join__field(graph: LOCAL) 
+  identity: String @join__field(graph: LOCAL___GRAPHQL) 
   name: String! @join__field(graph: USERS) 
   account: Account @join__field(graph: USERS) 
 }

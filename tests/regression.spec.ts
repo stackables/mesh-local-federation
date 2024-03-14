@@ -18,9 +18,9 @@ describe("Federation", () => {
 		supergraphSDL = await createSupergraph({
 			subgraphs: harness.subgraphs,
 			localSchema: harness.localSchema,
-			onRemoteRequestHeaders: ({ name }) => {
+			onRemoteRequestHeaders: ({ subgraphName }) => {
 				return {
-					authorization: name,
+					authorization: subgraphName,
 				};
 			},
 		});
@@ -28,9 +28,9 @@ describe("Federation", () => {
 		const yoga = await createMeshInstance({
 			supergraphSDL,
 			localSchema: harness.localSchema,
-			onRemoteRequestHeaders: ({ name }) => {
+			onRemoteRequestHeaders: ({ subgraphName }) => {
 				return {
-					authorization: name,
+					authorization: subgraphName,
 				};
 			},
 		});

@@ -39,12 +39,12 @@ export async function createFixture() {
 	return {
 		subgraphs: [
 			{
-				name: "users",
-				url: "http://localhost:4005/graphql",
+				subgraphName: "users",
+				endpoint: "http://localhost:4005/graphql",
 			},
 			{
-				name: "accounts",
-				url: "http://localhost:4006/graphql",
+				subgraphName: "accounts",
+				endpoint: "http://localhost:4006/graphql",
 			},
 		] as SubgraphService[],
 		localSchema,

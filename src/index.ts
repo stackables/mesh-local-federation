@@ -1,11 +1,11 @@
 export interface SubgraphService {
-	name: string;
-	url: string;
+	subgraphName: string;
+	endpoint: string;
 }
 
 export interface OnRemoteRequestHeadersOptions<T = unknown> {
-	url: string;
-	name: string;
+	endpoint: string;
+	subgraphName: string;
 	context: T;
 }
 

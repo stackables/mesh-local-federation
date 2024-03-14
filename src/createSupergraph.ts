@@ -3,7 +3,7 @@ import {
 	compositionHasErrors,
 } from "@theguild/federation-composition";
 import { ExecutionResult, GraphQLSchema, parse } from "graphql";
-import { createYoga } from "graphql-yoga";
+import { executorFactory } from "./executor.js";
 import { OnRemoteRequestHeadersCallback, SubgraphService } from "./index.js";
 
 export interface CreateSupergraphOptions<T = unknown> {
@@ -13,40 +13,31 @@ export interface CreateSupergraphOptions<T = unknown> {
 }
 
 export async function createSupergraph(opts: CreateSupergraphOptions) {
-	const subgraphs = opts.subgraphs.map((s) => ({
-		...s,
-		fetch,
-	}));
+	const subgraphs = [...opts.subgraphs];
 
 	// insert local to list
 	subgraphs.push({
-		name: "local",
-		url: "http://localhost/graphql",
-		fetch: createYoga({ schema: opts.localSchema, batching: true })
-			.fetch as any,
+		subgraphName: "local://graphql",
+		endpoint: "local://graphql",
 	});
+
+	const factory = executorFactory(opts);
 
 	// fetch all remotes
 	const subgraphsWithTypes = Promise.all(
 		subgraphs.map(async (sub) => {
-			const headers: Record<string, string> = {
-				"content-type": "application/json",
-			};
-			if (opts.onRemoteRequestHeaders) {
-				const more = await opts.onRemoteRequestHeaders({
-					context: {},
-					url: sub.url,
-					name: sub.name,
-				});
-				Object.assign(headers, more);
-			}
-			const response = await sub.fetch(sub.url, {
+			const fetch = factory.getFetch(sub);
+
+			const response = await fetch(sub.endpoint, {
 				method: "POST",
-				headers,
+				headers: {
+					"content-type": "application/json",
+				},
 				body: JSON.stringify({
 					query: `{ _service { sdl } }`,
 				}),
 			});
+
 			if (!response.ok) {
 				throw new Error("service sdl call failed");
 			}
@@ -58,8 +49,8 @@ export async function createSupergraph(opts: CreateSupergraphOptions) {
 
 			return {
 				typeDefs: parse(federationSDL),
-				name: sub.name,
-				url: sub.url,
+				name: sub.subgraphName,
+				url: sub.endpoint,
 			};
 		})
 	);

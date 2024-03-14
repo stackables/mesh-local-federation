@@ -29,12 +29,12 @@ import type { SubgraphService } from "mesh-local-federation";
 
 const subgraphs: SubgraphService[] = [
 	{
-		name: "users",
-		url: "https://federated.users.service.endpoint/graphql",
+		subgraphName: "users",
+		endpoint: "https://federated.users.service.endpoint/graphql",
 	},
 	{
-		name: "orders",
-		url: "https://federated.orders.service.endpoint/graphql",
+		subgraphName: "orders",
+		endpoint: "https://federated.orders.service.endpoint/graphql",
 	},
 	// ...
 ];
