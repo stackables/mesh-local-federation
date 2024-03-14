@@ -24,8 +24,7 @@ graph LR;
     gateway--headers--->federated1(External service);
     gateway--headers--->federated2(External service);
 
-	classDef local fill:#008038
-	classDef data fill:#6e6e6e
+	classDef local fill:#00b54f
 ```
 
 #### Define external services
