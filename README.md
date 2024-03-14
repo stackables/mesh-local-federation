@@ -56,7 +56,9 @@ export const localSchema = buildSubgraphSchema({
 	`,
 	resolvers: {
 		Query: {
-			hello: () => {
+			hello: (obj, args, context, info) => {
+				// Full yoga server context is passed to the local subgraph
+				// See server creation in the last paragraph
 				return "world";
 			},
 		},
@@ -115,3 +117,7 @@ server.listen(4000, () => {
 	console.info("Server is running on http://localhost:4000/graphql");
 });
 ```
+
+## Thats it ...
+
+... happy coding :)
