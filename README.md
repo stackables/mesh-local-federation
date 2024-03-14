@@ -18,11 +18,11 @@ But for a specific workflow is sets up things in a simple and clean way to remov
 ```mermaid
 graph LR;
     subgraph Instance
-        gateway(/graphql)-->local(Local executable schema)
-        db{{Supergraph\ndefinition}}<-.->gateway
+        gateway(/graphql)--context-->local(Local executable schema)
+        db{{Supergraph\ndefinition}}<-.data..->gateway
     end
-    gateway--->federated1(External service);
-    gateway--->federated2(External service);
+    gateway--headers--->federated1(External service);
+    gateway--headers--->federated2(External service);
 ```
 
 #### Define external services
