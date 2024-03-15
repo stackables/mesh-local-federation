@@ -4,7 +4,6 @@
 	"description": "Graphql-mesh helper to run federated gateway with local executable graphql schema",
 	"main": "build/src/index.js",
 	"types": "build/src/index.d.ts",
-	"bin": "build/src/bin/cli.js",
 	"files": [
 		"build/src"
 	],
