@@ -12,7 +12,7 @@ exports[`Federation run basic query 1`] = `
       "identity": "google",
       "name": "Aarne Laur",
     },
-    "userAgent": "mesh-local-federation / 1.0.0",
+    "userAgent": "mesh-local-federation / 0.0.0",
     "users": [
       {
         "account": {

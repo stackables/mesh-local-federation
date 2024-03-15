@@ -1,6 +1,6 @@
 {
 	"name": "mesh-local-federation",
-	"version": "1.0.0",
+	"version": "0.0.0",
 	"description": "Graphql-mesh helper to run federated gateway with local executable graphql schema",
 	"main": "build/src/index.js",
 	"types": "build/src/index.d.ts",
