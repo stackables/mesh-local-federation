@@ -3,36 +3,45 @@
 
 # GraphQL mesh gateway with local federation
 
-Disclaimer: This is 99% glue around the the following excellent packages:
+Disclaimer: This is 100% glue around the the following excellent packages:
 
-- [@graphql-mesh/\*](https://the-guild.dev/graphql/mesh/docs)
+- [@graphql-mesh](https://the-guild.dev/graphql/mesh/docs)
 - [@theguild/federation-composition](https://github.com/the-guild-org/federation)
 
-But for a specific workflow is sets up things in s simple manner tht is just nice and clean to use.
+... **But** for this specific workflow it sets things up in a simple and clean way and removes un-needed boilerplate.
+
+The package exposes only 2 functions:
+
+1. `createSupergraph` - Takes external services and the local schema to produce the supergraph definition
+1. `createMeshInstance` - Takes the supergraph definition from createSupergraph and local schema to build a executable gateway configuration that can be used with [graphql-yoga](https://github.com/dotansimha/graphql-yoga)
 
 ## Workflow
 
 ```mermaid
 graph LR;
     subgraph Instance
-        gateway(/graphql)-->local(Local executable schema)
-        db(Supergraph)<-->gateway
+        gateway(Graphql\ngateway):::local--context-->local(Local executable schema):::local
+        db{{Supergraph\ndefinition}}:::data<-.load.->gateway
     end
-    gateway--->federated1(External service);
-    gateway--->federated2(External service);
+    gateway--headers--->federated1(External service);
+    gateway--headers--->federated2(External service);
+
+	classDef local fill:#00b54f
 ```
 
 #### Define external services
 
 ```typescript
-const subgraphs = [
+import type { SubgraphService } from "mesh-local-federation";
+
+const subgraphs: SubgraphService[] = [
 	{
-		name: "users",
-		url: "https://federated.users.service.endpoint/graphql",
+		subgraphName: "users",
+		endpoint: "https://federated.users.service.endpoint/graphql",
 	},
 	{
-		name: "orders",
-		url: "https://federated.orders.service.endpoint/graphql",
+		subgraphName: "orders",
+		endpoint: "https://federated.orders.service.endpoint/graphql",
 	},
 	// ...
 ];
@@ -51,7 +60,9 @@ export const localSchema = buildSubgraphSchema({
 	`,
 	resolvers: {
 		Query: {
-			hello: () => {
+			hello: (obj, args, context, info) => {
+				// Full yoga server context is passed to the local subgraph
+				// See server creation in the last paragraph
 				return "world";
 			},
 		},
@@ -59,68 +70,58 @@ export const localSchema = buildSubgraphSchema({
 });
 ```
 
-#### Combine them into a single local yoga instance
+#### Build supergraph definition
 
 ```typescript
-const { yogaConfig, supergraphSDL } = createGatewayConfig({
+import { createSupergraph } from "mesh-local-federation";
+
+const supergraphSDL = await createSupergraph({
 	subgraphs,
 	localSchema,
-});
-```
-
-## Customize headers
-
-Special hook is called before each outgoing remote request. Local schema request will have the `context` filled with the original `yoga context`.
-
-```typescript
-const { yogaConfig, supergraphSDL } = createGatewayConfig({
-	onRemoteRequestHeaders: async ({ url, context }) => {
+	onRemoteRequestHeaders: ({ endpoint }) => {
 		return {
-			Authorization: `Bearer ${await getToken(url)}`,
+			Authorization: `Bearer ${await getToken(endpoint)}`,
 		};
 	},
 });
 ```
 
-## Using a predefined supergraph file (much faster)
+Result of this step can be cached and the resulting schema definition can be used for the next steps to speed up the precess significantly.
+
+[materialize-ts-function](https://www.npmjs.com/package/materialize-ts-function) is a simple way to do this during build process.
+
+#### Create server
 
 ```typescript
-const { yogaConfig } = createGatewayConfig({
-	subgraphs,
-	localSchema,
-	supergraphSDL, // <--- Pass in a precalculated supergraph schema
+import { createServer } from "node:http";
+import { createMeshInstance } from "mesh-local-federation";
+import { createYoga } from "graphql-yoga";
+
+const config = await createMeshInstance({
+	supergraphSDL,
+	localSchema: harness.localSchema,
+	onRemoteRequestHeaders: ({ endpoint }) => {
+		return {
+			Authorization: `Bearer ${await getToken(endpoint)}`,
+		};
+	},
+});
+
+const yoga = createYoga({
+	...config,
+	context: ({ request }) => {
+		// context will be available in onRemoteRequestHeaders
+		// and will be passed to local graph
+	},
+});
+
+const server = createServer(yoga);
+
+server.listen(4000, () => {
+	console.info("Server is running on http://localhost:4000/graphql");
 });
 ```
 
-For example to following code snipped users [materialize-ts-function](https://www.npmjs.com/package/materialize-ts-function) to save the supergraphql during build step.
+## Thats it ...
 
-```typescript
-/**
- * @materialize
- */
-async function materializedSupergraphSDL() {
-	const { supergraphSDL } = createGatewayConfig({
-		subgraphs,
-		localSchema,
-	});
-
-	return {
-		subgraphs,
-		supergraphSDL,
-	};
-}
-
-async function main() {
-	// get cached supergraphSDL
-	const { subgraphs, supergraphSDL } = await materializedSupergraphSDL();
-
-	// use prebuilt supergraphSDL
-	const { yogaConfig } = createFederatedGateway({
-		subgraphs,
-		localSchema,
-		supergraphSDL,
-	});
-}
-```
-
-`npx materialize-ts-function` during build step will run the supergraph generation once and bundle the resulting definition in the source code
+... happy coding :)
