@@ -20,7 +20,7 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/stackables/mesh-local-federation.git"
+		"url": "git+https://github.com/stackables/mesh-local-federation.git"
 	},
 	"devDependencies": {
 		"@graphql-tools/utils": "^10.1.2",
