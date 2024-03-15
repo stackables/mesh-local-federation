@@ -30,8 +30,8 @@ dependencies:
     specifier: ^1.1.23
     version: 1.1.23(@types/node@20.11.28)(graphql@16.8.1)
   '@theguild/federation-composition':
-    specifier: ^0.10.1
-    version: 0.10.1(graphql@16.8.1)
+    specifier: ^0.11.0
+    version: 0.11.0(graphql@16.8.1)
   aggregate-error:
     specifier: ^5.0.0
     version: 5.0.0
@@ -2679,8 +2679,8 @@ packages:
       '@sinonjs/commons': 3.0.1
     dev: true
 
-  /@theguild/federation-composition@0.10.1(graphql@16.8.1):
-    resolution: {integrity: sha512-qvCLUy7b4rnsOP8EWqxTXmgMz8T2Hs66FSK93u78PyASjuX4wPboowXOpIZ3ra7URP7xpBJrdTK4us7hFnutlQ==}
+  /@theguild/federation-composition@0.11.0(graphql@16.8.1):
+    resolution: {integrity: sha512-kszYBFd9aUD2EJy12FW0a6cs5Mjv6+SkFcAbfK6TQu5k9FsR4H3d6yCIrTqENZxTYhDY2ZNOnC+Wyr2Qu6xF4w==}
     engines: {node: '>=18'}
     peerDependencies:
       graphql: ^16.0.0
@@ -3290,7 +3290,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001597
-      electron-to-chromium: 1.4.707
+      electron-to-chromium: 1.4.708
       node-releases: 2.0.14
       update-browserslist-db: 1.0.13(browserslist@4.23.0)
     dev: true
@@ -3807,8 +3807,8 @@ packages:
       readable-stream: 2.3.8
     dev: true
 
-  /electron-to-chromium@1.4.707:
-    resolution: {integrity: sha512-qRq74Mo7ChePOU6GHdfAJ0NREXU8vQTlVlfWz3wNygFay6xrd/fY2J7oGHwrhFeU30OVctGLdTh/FcnokTWpng==}
+  /electron-to-chromium@1.4.708:
+    resolution: {integrity: sha512-iWgEEvREL4GTXXHKohhh33+6Y8XkPI5eHihDmm8zUk5Zo7HICEW+wI/j5kJ2tbuNUCXJ/sNXa03ajW635DiJXA==}
     dev: true
 
   /emittery@0.13.1:
