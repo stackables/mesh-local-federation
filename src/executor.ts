@@ -34,7 +34,7 @@ function wrap(
 		const headers = options?.headers ?? {};
 		if (opts.onRemoteRequestHeaders) {
 			const more = await opts.onRemoteRequestHeaders({
-				context: {},
+				context,
 				endpoint: subgraph.endpoint,
 				subgraphName: subgraph.subgraphName,
 			});
