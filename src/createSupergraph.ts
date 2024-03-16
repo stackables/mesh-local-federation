@@ -2,7 +2,6 @@ import {
 	composeServices,
 	compositionHasErrors,
 } from "@theguild/federation-composition";
-import GraphAggregateError from "aggregate-error";
 import { ExecutionResult, GraphQLSchema, parse } from "graphql";
 import { executorFactory } from "./executor.js";
 import { OnRemoteRequestHeadersCallback, SubgraphService } from "./index.js";
@@ -45,7 +44,7 @@ export async function createSupergraph(opts: CreateSupergraphOptions) {
 
 			const body: ExecutionResult<any> = await response.json();
 			if (body.errors) {
-				throw new GraphAggregateError(body.errors);
+				throw new AggregateError(body.errors);
 			}
 
 			const federationSDL = body.data._service.sdl;
@@ -60,7 +59,7 @@ export async function createSupergraph(opts: CreateSupergraphOptions) {
 
 	const result = composeServices(subgraphsWithTypes);
 	if (compositionHasErrors(result)) {
-		throw new GraphAggregateError(result.errors);
+		throw new AggregateError(result.errors);
 	}
 	return result.supergraphSdl.replaceAll("{", " {");
 }
