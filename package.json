@@ -12,7 +12,7 @@
 		"stackables"
 	],
 	"scripts": {
-		"prepack": "npx materialize-ts-function@1.4.2 && tsc",
+		"prepack": "npx materialize-ts-function && tsc",
 		"test": "NODE_OPTIONS=\"--experimental-vm-modules\" jest",
 		"semantic-release": "semantic-release -b main"
 	},
@@ -37,6 +37,7 @@
 	},
 	"dependencies": {
 		"@graphql-mesh/cache-localforage": "^0.97.4",
+		"@graphql-mesh/cross-helpers": "^0.4.1",
 		"@graphql-mesh/merger-bare": "^0.97.4",
 		"@graphql-mesh/runtime": "^0.98.4",
 		"@graphql-mesh/store": "^0.97.4",
