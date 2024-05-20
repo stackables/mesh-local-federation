@@ -57,6 +57,34 @@ function wrap(
 	return wrapped;
 }
 
+function wrapLocal(fetchFn: FetchFn) {
+	const wrapped = async (
+		url: string,
+		options?: MeshFetchRequestInit | undefined,
+		context?: { request?: Request },
+		info?: GraphQLResolveInfo | undefined
+	) => {
+		const headers = options?.headers ?? {};
+		if (context?.request) {
+			context.request.headers.forEach((value, key) => {
+				headers[key] = value;
+			});
+		}
+
+		return fetchFn(
+			url,
+			{
+				...options,
+				headers,
+			},
+			context,
+			info
+		);
+	};
+
+	return wrapped;
+}
+
 export function executorFactory(
 	opts: CreateSupergraphOptions,
 	fetchFn: FetchFn = fetch
@@ -68,7 +96,7 @@ export function executorFactory(
 
 	function getFetch(subgraph: SubgraphService) {
 		if (subgraph.endpoint === "local://graphql") {
-			return localFetch;
+			return wrapLocal(localFetch);
 		}
 
 		return wrap(fetchFn, opts, subgraph);
