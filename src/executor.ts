@@ -62,7 +62,7 @@ function wrapLocal(fetchFn: FetchFn) {
 	const wrapped = async (
 		url: string,
 		options?: MeshFetchRequestInit | undefined,
-		context?: { request?: Request },
+		context?: { request?: Request; meshRequest?: Request },
 		info?: GraphQLResolveInfo | undefined
 	) => {
 		const headers = options?.headers ?? {};
@@ -70,6 +70,8 @@ function wrapLocal(fetchFn: FetchFn) {
 			context.request.headers.forEach((value, key) => {
 				headers[key] = value;
 			});
+
+			context.meshRequest = context.request;
 		}
 
 		return fetchFn(
