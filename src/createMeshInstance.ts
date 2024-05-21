@@ -4,6 +4,7 @@ import { getMesh } from "@graphql-mesh/runtime";
 import { InMemoryStoreStorageAdapter, MeshStore } from "@graphql-mesh/store";
 import { DefaultLogger, PubSub } from "@graphql-mesh/utils";
 import { GraphQLSchema } from "graphql";
+import type { YogaServerOptions } from "graphql-yoga";
 import SupergraphHandler from "./SupergraphHandler.js";
 import { OnRemoteRequestHeadersCallback } from "./index.js";
 
@@ -11,6 +12,7 @@ export interface CreateMeshInstanceOptions<T = unknown> {
 	supergraphSDL: string;
 	localSchema: GraphQLSchema;
 	onRemoteRequestHeaders?: OnRemoteRequestHeadersCallback<T>;
+	onLocalContext?: YogaServerOptions<{}, {}>["context"];
 }
 
 export async function createMeshInstance<T = unknown>(
