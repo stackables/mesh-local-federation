@@ -12,7 +12,7 @@ export interface CreateMeshInstanceOptions<T = unknown> {
 	supergraphSDL: string;
 	localSchema: GraphQLSchema;
 	onRemoteRequestHeaders?: OnRemoteRequestHeadersCallback<T>;
-	onLocalContext?: YogaServerOptions<{}, {}>["context"];
+	onLocalContext?: YogaServerOptions<{ meshRequest: Request }, {}>["context"];
 }
 
 export async function createMeshInstance<T = unknown>(

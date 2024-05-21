@@ -9,7 +9,7 @@ import { OnRemoteRequestHeadersCallback, SubgraphService } from "./index.js";
 export interface CreateSupergraphOptions<T = unknown> {
 	localSchema: GraphQLSchema;
 	onRemoteRequestHeaders?: OnRemoteRequestHeadersCallback<T>;
-	onLocalContext?: YogaServerOptions<{}, {}>["context"];
+	onLocalContext?: YogaServerOptions<{ meshRequest: Request }, {}>["context"];
 }
 
 /**
