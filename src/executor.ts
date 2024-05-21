@@ -3,12 +3,13 @@ import { FetchFn, buildHTTPExecutor } from "@graphql-tools/executor-http";
 import type { Executor } from "@graphql-tools/utils";
 import { readFile } from "fs/promises";
 import { GraphQLResolveInfo, GraphQLSchema } from "graphql";
-import { createYoga } from "graphql-yoga";
+import { createYoga, type YogaServerOptions } from "graphql-yoga";
 import { OnRemoteRequestHeadersCallback, SubgraphService } from "./index.js";
 
 export interface CreateSupergraphOptions<T = unknown> {
 	localSchema: GraphQLSchema;
 	onRemoteRequestHeaders?: OnRemoteRequestHeadersCallback<T>;
+	onLocalContext?: YogaServerOptions<{ meshRequest: Request }, {}>["context"];
 }
 
 /**
@@ -61,7 +62,7 @@ function wrapLocal(fetchFn: FetchFn) {
 	const wrapped = async (
 		url: string,
 		options?: MeshFetchRequestInit | undefined,
-		context?: { request?: Request },
+		context?: { request?: Request; meshRequest?: Request },
 		info?: GraphQLResolveInfo | undefined
 	) => {
 		const headers = options?.headers ?? {};
@@ -69,6 +70,8 @@ function wrapLocal(fetchFn: FetchFn) {
 			context.request.headers.forEach((value, key) => {
 				headers[key] = value;
 			});
+
+			context.meshRequest = context.request;
 		}
 
 		return fetchFn(
@@ -92,6 +95,7 @@ export function executorFactory(
 	const localFetch = createYoga({
 		schema: opts.localSchema,
 		batching: true,
+		context: opts.onLocalContext,
 	}).fetch;
 
 	function getFetch(subgraph: SubgraphService) {
