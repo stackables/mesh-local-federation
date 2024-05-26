@@ -2,13 +2,14 @@ import {
 	composeServices,
 	compositionHasErrors,
 } from "@theguild/federation-composition";
-import { ExecutionResult, GraphQLSchema, parse } from "graphql";
+import { ExecutionResult, parse } from "graphql";
+import type { YogaServerInstance } from "graphql-yoga";
 import { executorFactory } from "./executor.js";
 import { OnRemoteRequestHeadersCallback, SubgraphService } from "./index.js";
 
 export interface CreateSupergraphOptions<T = unknown> {
 	subgraphs: SubgraphService[];
-	localSchema: GraphQLSchema;
+	localSchema: YogaServerInstance<{}, any>;
 	onRemoteRequestHeaders?: OnRemoteRequestHeadersCallback<T>;
 }
 
