@@ -1,6 +1,7 @@
 import { buildSubgraphSchema } from "@graphql-tools/federation";
+import { createYoga } from "graphql-yoga";
 
-export const localSchema = buildSubgraphSchema({
+const executableSchema = buildSubgraphSchema({
 	typeDefs: /* GraphQL */ `
 		type User @key(fields: "id") {
 			id: ID!
@@ -29,3 +30,5 @@ export const localSchema = buildSubgraphSchema({
 		},
 	},
 });
+
+export const localSchema = createYoga({ schema: executableSchema });

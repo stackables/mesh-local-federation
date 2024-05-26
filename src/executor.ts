@@ -2,14 +2,13 @@ import { MeshFetchRequestInit } from "@graphql-mesh/types";
 import { FetchFn, buildHTTPExecutor } from "@graphql-tools/executor-http";
 import type { Executor } from "@graphql-tools/utils";
 import { readFile } from "fs/promises";
-import { GraphQLResolveInfo, GraphQLSchema } from "graphql";
-import { createYoga, type YogaServerOptions } from "graphql-yoga";
+import { GraphQLResolveInfo } from "graphql";
+import { type YogaServerInstance } from "graphql-yoga";
 import { OnRemoteRequestHeadersCallback, SubgraphService } from "./index.js";
 
 export interface CreateSupergraphOptions<T = unknown> {
-	localSchema: GraphQLSchema;
+	localSchema: YogaServerInstance<{}, any>;
 	onRemoteRequestHeaders?: OnRemoteRequestHeadersCallback<T>;
-	onLocalContext?: YogaServerOptions<{ meshRequest: Request }, {}>["context"];
 }
 
 /**
@@ -92,11 +91,7 @@ export function executorFactory(
 	opts: CreateSupergraphOptions,
 	fetchFn: FetchFn = fetch
 ) {
-	const localFetch = createYoga({
-		schema: opts.localSchema,
-		batching: true,
-		context: opts.onLocalContext,
-	}).fetch;
+	const localFetch = opts.localSchema.fetch;
 
 	function getFetch(subgraph: SubgraphService) {
 		if (subgraph.endpoint === "local://graphql") {

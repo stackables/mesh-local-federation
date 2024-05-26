@@ -33,7 +33,6 @@ describe("Federation", () => {
 					authorization: subgraphName,
 				};
 			},
-			onLocalContext: ({ request, meshRequest }) => {},
 		});
 
 		const server = createYoga({
