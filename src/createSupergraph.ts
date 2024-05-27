@@ -13,7 +13,9 @@ export interface CreateSupergraphOptions<T = unknown> {
 	onRemoteRequestHeaders?: OnRemoteRequestHeadersCallback<T>;
 }
 
-export async function createSupergraph(opts: CreateSupergraphOptions) {
+export async function createSupergraph(
+	opts: CreateSupergraphOptions
+): Promise<string> {
 	const subgraphs = [...opts.subgraphs];
 
 	// insert local to list

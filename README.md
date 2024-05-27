@@ -51,8 +51,9 @@ const subgraphs: SubgraphService[] = [
 
 ```typescript
 import { buildSubgraphSchema } from "@graphql-tools/federation";
+import { createYoga } from "graphql-yoga";
 
-export const localSchema = buildSubgraphSchema({
+const schema = buildSubgraphSchema({
 	typeDefs: /* GraphQL */ `
 		type Query {
 			hello: String
@@ -68,6 +69,8 @@ export const localSchema = buildSubgraphSchema({
 		},
 	},
 });
+
+export const localSchema = createYoga({ schema });
 ```
 
 #### Build supergraph definition
@@ -99,7 +102,7 @@ import { createYoga } from "graphql-yoga";
 
 const config = await createMeshInstance({
 	supergraphSDL,
-	localSchema: harness.localSchema,
+	localSchema: localSchema,
 	onRemoteRequestHeaders: ({ endpoint }) => {
 		return {
 			Authorization: `Bearer ${await getToken(endpoint)}`,
