@@ -1,6 +1,6 @@
 import LocalforageCache from "@graphql-mesh/cache-localforage";
 import BareMerger from "@graphql-mesh/merger-bare";
-import { getMesh } from "@graphql-mesh/runtime";
+import { getMesh, type MeshInstance } from "@graphql-mesh/runtime";
 import { InMemoryStoreStorageAdapter, MeshStore } from "@graphql-mesh/store";
 import { DefaultLogger, PubSub } from "@graphql-mesh/utils";
 import type { YogaServerInstance } from "graphql-yoga";
@@ -15,7 +15,7 @@ export interface CreateMeshInstanceOptions<T = unknown> {
 
 export async function createMeshInstance<T = unknown>(
 	opts: CreateMeshInstanceOptions<T>
-): Promise<any> {
+): Promise<MeshInstance> {
 	const store = new MeshStore("main", new InMemoryStoreStorageAdapter(), {
 		readonly: true,
 		validate: false,
