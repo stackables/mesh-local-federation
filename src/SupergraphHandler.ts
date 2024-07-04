@@ -11,8 +11,11 @@ export default class SupergraphHandler implements MeshHandler {
 
 		const schema = getStitchedSchemaFromSupergraphSdl({
 			supergraphSdl: this.opts.supergraphSDL,
-			onExecutor: (opts) => {
-				return factory.getExecutor(opts);
+			onSubschemaConfig: (subschemaConfig) => {
+				subschemaConfig.executor = factory.getExecutor({
+					endpoint: subschemaConfig.endpoint,
+					subgraphName: subschemaConfig.name,
+				});
 			},
 			batch: true,
 		});

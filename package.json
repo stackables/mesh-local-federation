@@ -23,30 +23,30 @@
 		"url": "git+https://github.com/stackables/mesh-local-federation.git"
 	},
 	"devDependencies": {
-		"@graphql-tools/utils": "^10.1.2",
+		"@graphql-tools/utils": "^10.2.3",
 		"@jest/globals": "^29.7.0",
-		"@tsconfig/node20": "^20.1.2",
+		"@tsconfig/node20": "^20.1.4",
 		"@types/jest": "^29.5.12",
-		"@types/node": "^20.11.28",
-		"@whatwg-node/server": "^0.9.29",
+		"@types/node": "^20.14.9",
+		"@whatwg-node/server": "^0.9.36",
 		"alias-hq": "^6.2.3",
 		"esbuild-jest": "^0.5.0",
 		"jest": "^29.7.0",
-		"semantic-release": "^23.0.3",
-		"typescript": "^5.4.2"
+		"semantic-release": "^24.0.0",
+		"typescript": "^5.5.3"
 	},
 	"dependencies": {
-		"@graphql-mesh/cache-localforage": "^0.97.4",
-		"@graphql-mesh/cross-helpers": "^0.4.1",
-		"@graphql-mesh/merger-bare": "^0.97.4",
-		"@graphql-mesh/runtime": "^0.98.4",
-		"@graphql-mesh/store": "^0.97.4",
-		"@graphql-mesh/types": "^0.97.4",
-		"@graphql-mesh/utils": "^0.97.4",
+		"@graphql-mesh/cache-localforage": "^0.98.10",
+		"@graphql-mesh/cross-helpers": "^0.4.4",
+		"@graphql-mesh/merger-bare": "^0.98.10",
+		"@graphql-mesh/runtime": "^0.99.12",
+		"@graphql-mesh/store": "^0.98.10",
+		"@graphql-mesh/types": "^0.98.10",
+		"@graphql-mesh/utils": "^0.98.10",
 		"@graphql-tools/executor-http": "^1.0.9",
-		"@graphql-tools/federation": "^1.1.23",
-		"@theguild/federation-composition": "^0.11.0",
-		"graphql": "^16.8.1",
-		"graphql-yoga": "^5.2.0"
+		"@graphql-tools/federation": "^2.1.1",
+		"@theguild/federation-composition": "^0.11.4",
+		"graphql": "^16.9.0",
+		"graphql-yoga": "^5.6.0"
 	}
 }
