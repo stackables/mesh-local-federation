@@ -3,13 +3,13 @@ import BareMerger from "@graphql-mesh/merger-bare";
 import { getMesh, type MeshInstance } from "@graphql-mesh/runtime";
 import { InMemoryStoreStorageAdapter, MeshStore } from "@graphql-mesh/store";
 import { DefaultLogger, PubSub } from "@graphql-mesh/utils";
-import type { YogaServerInstance } from "graphql-yoga";
-import SupergraphHandler from "./SupergraphHandler.js";
 import { OnRemoteRequestHeadersCallback } from "./index.js";
+import type { MinimalYogaInstance } from "./MinimalYogaInstance.js";
+import SupergraphHandler from "./SupergraphHandler.js";
 
 export interface CreateMeshInstanceOptions<T = unknown> {
 	supergraphSDL: string;
-	localSchema: YogaServerInstance<{}, any>;
+	localSchema: MinimalYogaInstance;
 	onRemoteRequestHeaders?: OnRemoteRequestHeadersCallback<T>;
 }
 

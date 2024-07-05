@@ -3,11 +3,11 @@ import { FetchFn, buildHTTPExecutor } from "@graphql-tools/executor-http";
 import type { Executor } from "@graphql-tools/utils";
 import { readFile } from "fs/promises";
 import { GraphQLResolveInfo } from "graphql";
-import { type YogaServerInstance } from "graphql-yoga";
 import { OnRemoteRequestHeadersCallback, SubgraphService } from "./index.js";
+import type { MinimalYogaInstance } from "./MinimalYogaInstance.js";
 
 export interface CreateSupergraphOptions<T = unknown> {
-	localSchema: YogaServerInstance<{}, any>;
+	localSchema: MinimalYogaInstance;
 	onRemoteRequestHeaders?: OnRemoteRequestHeadersCallback<T>;
 }
 
