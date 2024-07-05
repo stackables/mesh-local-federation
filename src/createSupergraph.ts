@@ -3,13 +3,13 @@ import {
 	compositionHasErrors,
 } from "@theguild/federation-composition";
 import { ExecutionResult, parse } from "graphql";
-import type { YogaServerInstance } from "graphql-yoga";
 import { executorFactory } from "./executor.js";
 import { OnRemoteRequestHeadersCallback, SubgraphService } from "./index.js";
+import type { MinimalYogaInstance } from "./MinimalYogaInstance.js";
 
 export interface CreateSupergraphOptions<T = unknown> {
 	subgraphs: SubgraphService[];
-	localSchema: YogaServerInstance<{}, any>;
+	localSchema: MinimalYogaInstance;
 	onRemoteRequestHeaders?: OnRemoteRequestHeadersCallback<T>;
 }
 
