@@ -1,3 +1,6 @@
+> [!WARNING]
+> **No longer maintained.** This repository is archived. `mesh-local-federation` stays on npm at its last version (2.1.1), but gets no further updates or security fixes.
+
 [![npm](https://img.shields.io/npm/v/mesh-local-federation?label=mesh-local-federation&logo=npm)](https://www.npmjs.com/package/mesh-local-federation)
 [![codecov](https://codecov.io/gh/stackables/mesh-local-federation/branch/main/graph/badge.svg?token=x1DmWF8EId)](https://codecov.io/gh/stackables/mesh-local-federation)
 
